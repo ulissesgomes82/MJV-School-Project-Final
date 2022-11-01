@@ -42,6 +42,7 @@ public class AlunoService {
 	}
 	
 	public void delete(Long id) {
+		findById(id);
 		repository.deleteById(id);
 	}
 	

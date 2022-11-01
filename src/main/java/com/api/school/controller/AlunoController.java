@@ -26,6 +26,8 @@ import com.api.school.service.AlunoService;
 @RequestMapping("/alunos")
 public class AlunoController {
 
+	private static final String ID = "/{id}";
+
 	@Autowired
 	private AlunoService service;
 	
@@ -37,24 +39,24 @@ public class AlunoController {
 		return ResponseEntity.ok(service.findAll().stream().map(x->mapper.map(x, AlunoDTO.class)).collect(Collectors.toList()));
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping(ID)
 	public ResponseEntity<AlunoDTO> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(mapper.map(service.findById(id), AlunoDTO.class));
 	}
 	
 	@PostMapping
 	public ResponseEntity<AlunoDTO> save(@RequestBody @Valid AlunoDTO aluno){
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(service.save(aluno).getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path(ID).buildAndExpand(service.save(aluno).getId()).toUri();
 		return ResponseEntity.created(uri).body(null);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping(ID)
 	public ResponseEntity<AlunoDTO> update(@PathVariable Long id, @RequestBody AlunoDTO aluno) {
 		aluno.setId(id);
 		return ResponseEntity.ok(mapper.map(service.update(aluno), AlunoDTO.class));
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping(ID)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
