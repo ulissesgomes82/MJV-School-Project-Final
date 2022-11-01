@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.api.school.model.Aluno;
 import com.api.school.model.dto.AlunoDTO;
 import com.api.school.service.AlunoService;
 
@@ -50,8 +49,9 @@ public class AlunoController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Aluno> update(@PathVariable Long id, @RequestBody Aluno aluno) {
-		return ResponseEntity.ok(service.update(id, aluno));
+	public ResponseEntity<AlunoDTO> update(@PathVariable Long id, @RequestBody AlunoDTO aluno) {
+		aluno.setId(id);
+		return ResponseEntity.ok(mapper.map(service.update(aluno), AlunoDTO.class));
 	}
 
 	@DeleteMapping("/{id}")

@@ -36,13 +36,9 @@ public class AlunoService {
 		return repository.save(mapper.map(aluno, Aluno.class));
 	}
 	
-	public Aluno update(Long id, Aluno aluno) {
-		aluno.setId(id);
-		Aluno obj = repository.getReferenceById(id);
-		obj.setName(aluno.getName());
-		obj.setEmail(aluno.getEmail());
-		obj.setSchool(aluno.getSchool());
-		return repository.save(obj);
+	public Aluno update(AlunoDTO aluno) {
+		findByEmail(aluno);
+		return repository.save(mapper.map(aluno, Aluno.class));
 	}
 	
 	public void delete(Long id) {
@@ -51,7 +47,7 @@ public class AlunoService {
 	
 	private void findByEmail(AlunoDTO obj) {
 		Optional<Aluno> aluno = repository.findByEmail(obj.getEmail());
-		if (aluno.isPresent()) {
+		if (aluno.isPresent() && !aluno.get().getId().equals(obj.getId())) {
 			throw new DataIntegrationViolationException("E-mail já cadastrado no sistema");
 		}
 	}
