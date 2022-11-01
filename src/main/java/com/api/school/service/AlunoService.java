@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.api.school.model.Aluno;
 import com.api.school.model.dto.AlunoDTO;
 import com.api.school.repository.AlunoRepository;
+import com.api.school.service.exceptions.DataIntegrationViolationException;
 import com.api.school.service.exceptions.ObjectNotFoundException;
 
 @Service
@@ -31,6 +32,7 @@ public class AlunoService {
 	}
 	
 	public Aluno save(AlunoDTO aluno) {
+		findByEmail(aluno);
 		return repository.save(mapper.map(aluno, Aluno.class));
 	}
 	
@@ -47,5 +49,10 @@ public class AlunoService {
 		repository.deleteById(id);
 	}
 	
-	
+	private void findByEmail(AlunoDTO obj) {
+		Optional<Aluno> aluno = repository.findByEmail(obj.getEmail());
+		if (aluno.isPresent()) {
+			throw new DataIntegrationViolationException("E-mail já cadastrado no sistema");
+		}
+	}
 }
