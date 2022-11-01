@@ -4,14 +4,30 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.Email;
 
-public class Aluno implements Serializable{
+@Entity
+public class Aluno implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(name = "Nome", length = 50)
 	private String name;
+	@Column(name = "E-mail")
+	@Email
 	private String email;
+	@Column(name = "School", length = 50)
 	private String school;
+	@Column(name = "Inicio")
 	private final LocalDate dataInicio = LocalDate.now();
+	@Column(name = "Encerramento")
 	private final LocalDate dataencerramento = LocalDate.now().plusDays(35);
 
 	public Aluno() {
