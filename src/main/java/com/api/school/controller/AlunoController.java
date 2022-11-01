@@ -46,7 +46,7 @@ public class AlunoController {
 	@PostMapping
 	public ResponseEntity<AlunoDTO> save(@RequestBody @Valid AlunoDTO aluno){
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(service.save(aluno).getId()).toUri();
-		return ResponseEntity.created(uri).build();
+		return ResponseEntity.created(uri).body(null);
 	}
 
 	@PutMapping("/{id}")
