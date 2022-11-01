@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.api.school.model.Aluno;
 import com.api.school.repository.AlunoRepository;
+import com.api.school.service.exceptions.ObjectNotFoundException;
 
 @Service
 public class AlunoService {
@@ -21,7 +22,7 @@ public class AlunoService {
 
 	public Aluno findById(Long id) {
 		Optional<Aluno> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(()-> new ObjectNotFoundException("object not found"));
 	}
 	
 	public Aluno save(Aluno aluno) {
