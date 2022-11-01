@@ -2,6 +2,8 @@ package com.api.school.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,7 +36,7 @@ public class AlunoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Aluno> save(@RequestBody Aluno aluno){
+	public ResponseEntity<Aluno> save(@RequestBody @Valid Aluno aluno){
 		return ResponseEntity.ok(service.save(aluno));
 	}
 

@@ -21,7 +21,7 @@ public class Aluno implements Serializable {
 	private Long id;
 	@Column(name = "Nome", length = 50)
 	private String name;
-	@Column(name = "E-mail")
+	@Column(name = "Email")
 	@Email
 	private String email;
 	@Column(name = "School", length = 50)
