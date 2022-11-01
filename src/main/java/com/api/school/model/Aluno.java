@@ -29,7 +29,7 @@ public class Aluno implements Serializable {
 	@Column(name = "Inicio")
 	private final LocalDate dataInicio = LocalDate.now();
 	@Column(name = "Encerramento")
-	private final LocalDate dataencerramento = LocalDate.now().plusDays(35);
+	private final LocalDate dataEncerramento = LocalDate.now().plusDays(35);
 
 	public Aluno() {
 	}
@@ -77,8 +77,8 @@ public class Aluno implements Serializable {
 		return dataInicio;
 	}
 
-	public LocalDate getDataencerramento() {
-		return dataencerramento;
+	public LocalDate getDataEncerramento() {
+		return dataEncerramento;
 	}
 
 	@Override

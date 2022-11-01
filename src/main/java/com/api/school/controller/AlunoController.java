@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.school.model.Aluno;
+import com.api.school.model.dto.AlunoDTO;
 import com.api.school.service.AlunoService;
 
 @RestController
@@ -24,6 +26,9 @@ public class AlunoController {
 
 	@Autowired
 	private AlunoService service;
+	
+	@Autowired
+	private ModelMapper mapper;
 
 	@GetMapping
 	public ResponseEntity<List<Aluno>> findAll() {
@@ -31,8 +36,8 @@ public class AlunoController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Aluno> findById(@PathVariable Long id) {
-		return ResponseEntity.ok(service.findById(id));
+	public ResponseEntity<AlunoDTO> findById(@PathVariable Long id) {
+		return ResponseEntity.ok(mapper.map(service.findById(id), AlunoDTO.class));
 	}
 	
 	@PostMapping
