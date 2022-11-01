@@ -3,10 +3,12 @@ package com.api.school.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.school.model.Aluno;
+import com.api.school.model.dto.AlunoDTO;
 import com.api.school.repository.AlunoRepository;
 import com.api.school.service.exceptions.ObjectNotFoundException;
 
@@ -15,6 +17,9 @@ public class AlunoService {
 
 	@Autowired
 	private AlunoRepository repository;
+	
+	@Autowired
+	private ModelMapper mapper;
 
 	public List<Aluno> findAll() {
 		return repository.findAll();
@@ -25,8 +30,8 @@ public class AlunoService {
 		return obj.orElseThrow(()-> new ObjectNotFoundException("object not found"));
 	}
 	
-	public Aluno save(Aluno aluno) {
-		return repository.save(aluno);
+	public Aluno save(AlunoDTO aluno) {
+		return repository.save(mapper.map(aluno, Aluno.class));
 	}
 	
 	public Aluno update(Long id, Aluno aluno) {

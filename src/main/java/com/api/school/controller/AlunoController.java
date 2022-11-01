@@ -1,8 +1,8 @@
 package com.api.school.controller;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.api.school.model.Aluno;
 import com.api.school.model.dto.AlunoDTO;
@@ -43,8 +44,9 @@ public class AlunoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Aluno> save(@RequestBody @Valid Aluno aluno){
-		return ResponseEntity.ok(service.save(aluno));
+	public ResponseEntity<AlunoDTO> save(@RequestBody @Valid AlunoDTO aluno){
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(service.save(aluno).getId()).toUri();
+		return ResponseEntity.created(uri).build();
 	}
 
 	@PutMapping("/{id}")
