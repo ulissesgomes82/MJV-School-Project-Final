@@ -1,6 +1,8 @@
 package com.api.school.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
@@ -31,8 +33,8 @@ public class AlunoController {
 	private ModelMapper mapper;
 
 	@GetMapping
-	public ResponseEntity<List<Aluno>> findAll() {
-		return ResponseEntity.ok(service.findAll());
+	public ResponseEntity<List<AlunoDTO>> findAll() {
+		return ResponseEntity.ok(service.findAll().stream().map(x->mapper.map(x, AlunoDTO.class)).collect(Collectors.toList()));
 	}
 
 	@GetMapping("/{id}")
