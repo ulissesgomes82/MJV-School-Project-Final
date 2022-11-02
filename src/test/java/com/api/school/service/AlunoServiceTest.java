@@ -112,7 +112,7 @@ class AlunoServiceTest {
 
 	@DisplayName("Teste violação de integridade de dados ao salvar")
 	@Test
-	void SaveDataIntegrationViolationException() {
+	void saveDataIntegrationViolationException() {
 		when(repository.findByEmail(anyString())).thenReturn(optionalAluno);
 		try {
 			optionalAluno.get().setId(2L);
@@ -136,6 +136,19 @@ class AlunoServiceTest {
 		assertEquals(SCHOOL, response.getSchool());
 		assertEquals(aluno.getDataInicio(), response.getDataInicio());
 		assertEquals(aluno.getDataEncerramento(), response.getDataEncerramento());
+	}
+	
+	@DisplayName("Teste violação de integridade de dados no update")
+	@Test
+	void updateDataIntegrationViolationException() {
+		when(repository.findByEmail(anyString())).thenReturn(optionalAluno);
+		try {
+			optionalAluno.get().setId(2L);
+			service.save(alunoDTO);
+		} catch (Exception e) {
+			assertEquals(DataIntegrationViolationException.class, e.getClass());
+			assertEquals("E-mail já cadastrado no sistema", e.getMessage());
+		}
 	}
 
 //	@Test
