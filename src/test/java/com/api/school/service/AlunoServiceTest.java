@@ -2,6 +2,8 @@ package com.api.school.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
@@ -18,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.api.school.model.Aluno;
 import com.api.school.model.dto.AlunoDTO;
 import com.api.school.repository.AlunoRepository;
+import com.api.school.service.exceptions.ObjectNotFoundException;
 
 @SpringBootTest
 class AlunoServiceTest {
@@ -52,7 +55,7 @@ class AlunoServiceTest {
 	@DisplayName("Teste retorno de instância de usuário")
 	@Test
 	void testFindById() {
-		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(aptionalAluno);
+		when(repository.findById(Mockito.anyLong())).thenReturn(aptionalAluno);
 		Aluno response = service.findById(ID);
 		assertNotNull(response);
 		assertEquals(Aluno.class, response.getClass());
@@ -61,6 +64,18 @@ class AlunoServiceTest {
 		assertEquals(EMAIL, response.getEmail());
 		assertEquals(SCHOOL, response.getSchool());
 		
+	}
+	@DisplayName("Teste de exceções de objeto não encontrado")
+	@Test
+	void findByIdObjectNotFoundException() {
+		when(repository.findById(anyLong())).thenThrow(new ObjectNotFoundException("object not found"));
+		
+		try {
+			service.findById(ID);
+		} catch (Exception e) {
+			assertEquals(ObjectNotFoundException.class, e.getClass());
+			assertEquals("object not found", e.getMessage());
+		}
 	}
 
 //	@Test
