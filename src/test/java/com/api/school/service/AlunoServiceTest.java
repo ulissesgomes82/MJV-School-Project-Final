@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +26,7 @@ import com.api.school.service.exceptions.ObjectNotFoundException;
 @SpringBootTest
 class AlunoServiceTest {
 
+	private static final int INDEX = 0;
 	private static final String SCHOOL = "School - Java";
 	private static final String EMAIL = "ulisses@gmail.com";
 	private static final String NAME = "Ulisses";
@@ -47,10 +49,22 @@ class AlunoServiceTest {
 		startAluno();
 	}
 
-//	@Test
-//	void testFindAll() {
-//		fail("Not yet implemented");
-//	}
+	@DisplayName("Teste retorno da lista de Aluno")
+	@Test
+	void testFindAll() {
+		when(repository.findAll()).thenReturn(List.of(aluno));
+		List<Aluno> response = service.findAll();
+		
+		assertNotNull(response);
+		assertEquals(1, response.size());
+		assertEquals(Aluno.class, response.get(INDEX).getClass());
+		assertEquals(ID, response.get(INDEX).getId());
+		assertEquals(NAME, response.get(INDEX).getName());
+		assertEquals(EMAIL, response.get(INDEX).getEmail());
+		assertEquals(SCHOOL, response.get(INDEX).getSchool());
+		assertEquals(aluno.getDataInicio(), response.get(INDEX).getDataInicio());
+		assertEquals(aluno.getDataEncerramento(), response.get(INDEX).getDataEncerramento());
+	}
 
 	@DisplayName("Teste retorno de instância de usuário")
 	@Test
