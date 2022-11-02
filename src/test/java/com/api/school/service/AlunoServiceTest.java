@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -151,10 +154,14 @@ class AlunoServiceTest {
 		}
 	}
 
-//	@Test
-//	void testDelete() {
-//		fail("Not yet implemented");
-//	}
+	@DisplayName("Teste delete com sucesso")
+	@Test
+	void testDelete() {
+		when(repository.findById(anyLong())).thenReturn(optionalAluno);
+		doNothing().when(repository).deleteById(anyLong());
+		service.delete(ID);
+		verify(repository, times(1)).deleteById(anyLong());
+	}
 
 	private void startAluno() {
 		aluno = new Aluno(ID, NAME, EMAIL, SCHOOL);
