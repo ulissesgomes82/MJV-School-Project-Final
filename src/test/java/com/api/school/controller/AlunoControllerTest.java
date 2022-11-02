@@ -56,14 +56,14 @@ class AlunoControllerTest {
 		when(service.findAll()).thenReturn(List.of(aluno));
 		when(mapper.map(any(), any())).thenReturn(alunoDTO);
 		ResponseEntity<List<AlunoDTO>> response = controller.findAll();
-		
+
 		assertNotNull(response);
 		assertNotNull(response.getBody());
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertEquals(ResponseEntity.class, response.getClass());
 		assertEquals(ArrayList.class, response.getBody().getClass());
 		assertEquals(AlunoDTO.class, response.getBody().get(INDEX).getClass());
-		
+
 		assertEquals(ID, response.getBody().get(INDEX).getId());
 		assertEquals(NAME, response.getBody().get(INDEX).getName());
 		assertEquals(EMAIL, response.getBody().get(INDEX).getEmail());
@@ -84,10 +84,18 @@ class AlunoControllerTest {
 		assertEquals(AlunoDTO.class, response.getBody().getClass());
 	}
 
-//	@Test
-//	void testSave() {
-//	}
-//
+	@DisplayName("Controller save com sucesso")
+	@Test
+	void testSave() {
+		when(service.save(any())).thenReturn(aluno);
+
+		ResponseEntity<AlunoDTO> response = controller.save(alunoDTO);
+
+		assertEquals(ResponseEntity.class, response.getClass());
+		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+		assertNotNull(response.getHeaders().get("Location"));
+	}
+
 //	@Test
 //	void testUpdate() {
 //	}
