@@ -7,6 +7,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.api.school.model.Aluno;
@@ -46,9 +50,27 @@ class AlunoControllerTest {
 		startAluno();
 	}
 
-//	@Test
-//	void testFindAll() {
-//	}
+	@DisplayName("Controller findAll com sucesso")
+	@Test
+	void testFindAll() {
+		when(service.findAll()).thenReturn(List.of(aluno));
+		when(mapper.map(any(), any())).thenReturn(alunoDTO);
+		ResponseEntity<List<AlunoDTO>> response = controller.findAll();
+		
+		assertNotNull(response);
+		assertNotNull(response.getBody());
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertEquals(ResponseEntity.class, response.getClass());
+		assertEquals(ArrayList.class, response.getBody().getClass());
+		assertEquals(AlunoDTO.class, response.getBody().get(INDEX).getClass());
+		
+		assertEquals(ID, response.getBody().get(INDEX).getId());
+		assertEquals(NAME, response.getBody().get(INDEX).getName());
+		assertEquals(EMAIL, response.getBody().get(INDEX).getEmail());
+		assertEquals(SCHOOL, response.getBody().get(INDEX).getSchool());
+		assertEquals(alunoDTO.getDataInicio(), response.getBody().get(INDEX).getDataInicio());
+		assertEquals(alunoDTO.getDataEncerramento(), response.getBody().get(INDEX).getDataEncerramento());
+	}
 
 	@DisplayName("Controller findById com sucesso")
 	@Test
