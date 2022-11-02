@@ -123,12 +123,21 @@ class AlunoServiceTest {
 		}
 	}
 
-//
-//	@Test
-//	void testUpdate() {
-//		fail("Not yet implemented");
-//	}
-//
+	@DisplayName("Teste aluno atualizado com sucesso")
+	@Test
+	void testUpdate() {
+		when(repository.save(any())).thenReturn(aluno);
+		Aluno response = service.update(alunoDTO);
+		assertNotNull(response);
+		assertEquals(Aluno.class, response.getClass());
+		assertEquals(ID, response.getId());
+		assertEquals(NAME, response.getName());
+		assertEquals(EMAIL, response.getEmail());
+		assertEquals(SCHOOL, response.getSchool());
+		assertEquals(aluno.getDataInicio(), response.getDataInicio());
+		assertEquals(aluno.getDataEncerramento(), response.getDataEncerramento());
+	}
+
 //	@Test
 //	void testDelete() {
 //		fail("Not yet implemented");
