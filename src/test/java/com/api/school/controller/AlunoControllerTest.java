@@ -1,14 +1,21 @@
 package com.api.school.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 
 import com.api.school.model.Aluno;
 import com.api.school.model.dto.AlunoDTO;
@@ -39,30 +46,33 @@ class AlunoControllerTest {
 		startAluno();
 	}
 
-	@Test
-	void testFindAll() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testFindAll() {
+//	}
 
+	@DisplayName("Controller findById com sucesso")
 	@Test
 	void testFindById() {
-		fail("Not yet implemented");
+		when(service.findById(anyLong())).thenReturn(aluno);
+		when(mapper.map(any(), any())).thenReturn(alunoDTO);
+		ResponseEntity<AlunoDTO> response = controller.findById(ID);
+		assertNotNull(response);
+		assertNotNull(response.getBody());
+		assertEquals(ResponseEntity.class, response.getClass());
+		assertEquals(AlunoDTO.class, response.getBody().getClass());
 	}
 
-	@Test
-	void testSave() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testUpdate() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testDelete() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testSave() {
+//	}
+//
+//	@Test
+//	void testUpdate() {
+//	}
+//
+//	@Test
+//	void testDelete() {
+//	}
 
 	private void startAluno() {
 		aluno = new Aluno(ID, NAME, EMAIL, SCHOOL);
