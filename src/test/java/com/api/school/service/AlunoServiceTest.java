@@ -32,6 +32,8 @@ import com.api.school.service.exceptions.ObjectNotFoundException;
 @SpringBootTest
 class AlunoServiceTest {
 
+	private static final String E_MAIL_JÁ_CADASTRADO_NO_SISTEMA = "E-mail já cadastrado no sistema";
+	private static final String OBJECT_NOT_FOUND = "object not found";
 	private static final int INDEX = 0;
 	private static final String SCHOOL = "School - Java";
 	private static final String EMAIL = "ulisses@gmail.com";
@@ -88,13 +90,13 @@ class AlunoServiceTest {
 	@DisplayName("Teste de exceções de objeto não encontrado")
 	@Test
 	void findByIdObjectNotFoundException() {
-		when(repository.findById(anyLong())).thenThrow(new ObjectNotFoundException("object not found"));
+		when(repository.findById(anyLong())).thenThrow(new ObjectNotFoundException(OBJECT_NOT_FOUND));
 
 		try {
 			service.findById(ID);
 		} catch (Exception e) {
 			assertEquals(ObjectNotFoundException.class, e.getClass());
-			assertEquals("object not found", e.getMessage());
+			assertEquals(OBJECT_NOT_FOUND, e.getMessage());
 		}
 	}
 
@@ -122,7 +124,7 @@ class AlunoServiceTest {
 			service.save(alunoDTO);
 		} catch (Exception e) {
 			assertEquals(DataIntegrationViolationException.class, e.getClass());
-			assertEquals("E-mail já cadastrado no sistema", e.getMessage());
+			assertEquals(E_MAIL_JÁ_CADASTRADO_NO_SISTEMA, e.getMessage());
 		}
 	}
 
@@ -150,7 +152,7 @@ class AlunoServiceTest {
 			service.save(alunoDTO);
 		} catch (Exception e) {
 			assertEquals(DataIntegrationViolationException.class, e.getClass());
-			assertEquals("E-mail já cadastrado no sistema", e.getMessage());
+			assertEquals(E_MAIL_JÁ_CADASTRADO_NO_SISTEMA, e.getMessage());
 		}
 	}
 
@@ -161,6 +163,17 @@ class AlunoServiceTest {
 		doNothing().when(repository).deleteById(anyLong());
 		service.delete(ID);
 		verify(repository, times(1)).deleteById(anyLong());
+	}
+	
+	@Test
+	void deleteWithObjjectNotFoundException() {
+		when(repository.findById(anyLong())).thenThrow(new ObjectNotFoundException(OBJECT_NOT_FOUND));
+		try {
+			service.delete(ID);
+		} catch (Exception e) {
+			assertEquals(ObjectNotFoundException.class, e.getClass());
+			assertEquals(OBJECT_NOT_FOUND, e.getMessage());
+		}
 	}
 
 	private void startAluno() {
