@@ -36,8 +36,8 @@ class AlunoControllerTest {
 	private static final String NAME = "Ulisses";
 	private static final long ID = 1L;
 
-	private Aluno aluno;
-	private AlunoDTO alunoDTO;
+	private Aluno aluno = new Aluno();
+	private AlunoDTO alunoDTO = new AlunoDTO();
 
 	@InjectMocks
 	private AlunoController controller;
