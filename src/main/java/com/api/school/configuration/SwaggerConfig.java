@@ -20,7 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 	private Contact contato() {
-		return new Contact("Ulisses Gomes de Araujo", "http://www.seusite.com.br", "voce@seusite.com.br");
+		return new Contact("Ulisses Gomes de Araujo", "https://www.linkedin.com/in/ulisses-araujo-59831931/", "https://www.linkedin.com/in/ulisses-araujo-59831931/");
 	}
 
 	private ApiInfoBuilder informacoesApi() {
@@ -32,7 +32,7 @@ public class SwaggerConfig {
 		apiInfoBuilder.version("1.0");
 		apiInfoBuilder.termsOfServiceUrl("Termo de uso: Open Source");
 		apiInfoBuilder.license("Licença - Sua Empresa");
-		apiInfoBuilder.licenseUrl("http://www.seusite.com.br");
+		apiInfoBuilder.licenseUrl("https://www.linkedin.com/in/ulisses-araujo-59831931/");
 		apiInfoBuilder.contact(this.contato());
 
 		return apiInfoBuilder;

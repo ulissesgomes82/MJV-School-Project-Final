@@ -2,7 +2,6 @@ package com.api.school.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -96,10 +95,26 @@ class AlunoControllerTest {
 		assertNotNull(response.getHeaders().get("Location"));
 	}
 
-//	@Test
-//	void testUpdate() {
-//	}
-//
+	@DisplayName("Controller update com sucesso")
+	@Test
+	void testUpdate() {
+		when(service.update(alunoDTO)).thenReturn(aluno);
+		when(mapper.map(any(), any())).thenReturn(alunoDTO);
+		
+		ResponseEntity<AlunoDTO> response = controller.update(ID, alunoDTO);
+		assertNotNull(response);
+		assertNotNull(response.getBody());
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertEquals(ResponseEntity.class, response.getClass());
+		assertEquals(AlunoDTO.class, response.getBody().getClass());
+		assertEquals(ID, response.getBody().getId());
+		assertEquals(NAME, response.getBody().getName());
+		assertEquals(EMAIL, response.getBody().getEmail());
+		assertEquals(SCHOOL, response.getBody().getSchool());
+		assertEquals(aluno.getDataInicio(), response.getBody().getDataInicio());
+		assertEquals(aluno.getDataEncerramento(), response.getBody().getDataEncerramento());
+	}
+
 //	@Test
 //	void testDelete() {
 //	}
