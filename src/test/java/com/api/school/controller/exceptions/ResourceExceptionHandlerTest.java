@@ -13,12 +13,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import com.api.school.service.exceptions.DataIntegrationViolationException;
 import com.api.school.service.exceptions.ObjectNotFoundException;
 
 @SpringBootTest
 class ResourceExceptionHandlerTest {
 
 
+	private static final String E_MAIL_JA_CADASTRADO_NO_SISTEMA = "E-mail já cadastrado no sistema";
 	private static final String OBJECT_NOT_FOUND = "object not found";
 	@InjectMocks
 	private ResourceExceptionHandler exceptionHandler;
@@ -41,10 +43,17 @@ class ResourceExceptionHandlerTest {
 		assertEquals(OBJECT_NOT_FOUND, response.getBody().getError());
 		assertEquals(404, response.getBody().getStatus());
 	}
-
+	@DisplayName("ResourceExceptionHandler dataIntegrityViolation")
 	@Test
-	void testDataIntegratyViolationException() {
-		
+	void testDataIntegrityViolationException() {
+		ResponseEntity<StandardError> response = exceptionHandler
+				.dataIntegrityViolationException(new DataIntegrationViolationException(E_MAIL_JA_CADASTRADO_NO_SISTEMA), new MockHttpServletRequest());
+		assertNotNull(response);
+		assertNotNull(response.getBody());
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+		assertEquals(ResponseEntity.class, response.getClass());
+		assertEquals(E_MAIL_JA_CADASTRADO_NO_SISTEMA, response.getBody().getError());
+		assertEquals(400, response.getBody().getStatus());
 	}
 
 }
