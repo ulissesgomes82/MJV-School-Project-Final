@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -100,7 +103,7 @@ class AlunoControllerTest {
 	void testUpdate() {
 		when(service.update(alunoDTO)).thenReturn(aluno);
 		when(mapper.map(any(), any())).thenReturn(alunoDTO);
-		
+
 		ResponseEntity<AlunoDTO> response = controller.update(ID, alunoDTO);
 		assertNotNull(response);
 		assertNotNull(response.getBody());
@@ -115,9 +118,18 @@ class AlunoControllerTest {
 		assertEquals(aluno.getDataEncerramento(), response.getBody().getDataEncerramento());
 	}
 
-//	@Test
-//	void testDelete() {
-//	}
+	@DisplayName("Controller delete com sucesso")
+	@Test
+	void testDelete() {
+		doNothing().when(service).delete(anyLong());
+		
+		ResponseEntity<Void> response = controller.delete(ID);
+		assertNotNull(response);
+		assertNotNull(response.getClass());
+		assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+		verify(service, times(1)).delete(any());
+		
+	}
 
 	private void startAluno() {
 		aluno = new Aluno(ID, NAME, EMAIL, SCHOOL);
