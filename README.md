@@ -1,4 +1,4 @@
-# Schoolr APP
+# School APP
 API para prover recursos cadastro de aluno
 
 A Arquitetura da nossa plataforma é constituida por:
